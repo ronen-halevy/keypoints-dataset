@@ -20,88 +20,74 @@ class BodyPart:
     def rect(self, angle=0):
         return Rectangle(xy=self.xy, width=self.w, height=self.h, color=self.color, angle=angle)
 
+class Person:
+    def __init__(self, height, xloc):
+        head_width=height/7 # 80/640
+        head_height=height/7 # 60/640
+        head_x=xloc
+        head_y=height
+        body_h=3*head_height
+        body_w=1.2*head_width
+        thigh_w=0.5*head_width
+        thigh_h=2*head_height
+        leg_w=0.5*head_width
+        leg_h=2*head_height
+        arm_h=0.5*head_width
+        arm_w=1.2*head_width
+        fore_arm_w=1.2*head_width
+        fore_arm_h=0.4*head_width
+        self.head = BodyPart(width=head_width, height=head_height, xy=[head_x, head_y], name='self.head')
+        self.l_eye = BodyPart(width=self.head.w/4, height=self.head.h/7, xy=[self.head.xy[0] - self.head.w/6, self.head.xy[1] + self.head.h/6], color='black', name='self.l_eye')
+        self.r_eye = BodyPart(width=self.head.w/4, height=self.head.h/8, xy=[self.head.xy[0] + self.head.w/6, self.head.xy[1] + self.head.h/6], color='black', name='self.r_eye')
+        self.l_ear = BodyPart(width=self.head.w/8, height=self.head.h/4, xy=[self.head.xy[0] - self.head.w/2, self.head.xy[1]], color='black', name='self.r_eye')
+        self.r_ear = BodyPart(width=self.head.w/8, height=self.head.h/4, xy=[self.head.xy[0] + self.head.w/2, self.head.xy[1]], color='black', name='self.r_eye')
+        self.nose = BodyPart(width=self.l_eye.w/2, height=self.l_eye.h, xy=[self.head.xy[0], self.head.xy[1]], color='black', name='self.mouth')
+        self.mouth = BodyPart(width=self.l_eye.w, height=self.l_eye.h, xy=[self.head.xy[0], self.head.xy[1]-self.head.h/4], color='black', name='self.mouth')
 
+        self.body = BodyPart(width=body_w, height=body_h, xy=[self.head.xy[0], self.head.xy[1]-self.head.h/2-body_h/2], name='self.body')
+
+        self.l_thigh = BodyPart(width=thigh_w, height=thigh_h, xy=[self.body.xy[0]-self.body.w/3, self.body.xy[1]-self.body.h/4-thigh_h/2], name='self.l_thigh')
+        self.r_thigh = BodyPart(width=thigh_w, height=thigh_h, xy=[self.body.xy[0]+self.body.w/3, self.body.xy[1]-self.body.h/4-thigh_h/2], name='self.r_thigh')
+
+        self.l_leg = BodyPart(width=leg_w, height=leg_h, xy=[self.l_thigh.xy[0], self.l_thigh.xy[1]-self.l_thigh.h/4-leg_h/2], name='self.l_leg')
+        self.r_leg = BodyPart(width=leg_w, height=leg_h, xy=[self.r_thigh.xy[0], self.r_thigh.xy[1]-self.r_thigh.h/4-leg_h/2], name='self.r_leg')
+
+        self.l_arm = BodyPart(width=arm_w, height=arm_h, xy=[self.body.xy[0]-arm_w/1.5, self.body.xy[1]+body_h/3], name='self.l_arm')
+        self.r_arm = BodyPart(width=arm_w, height=arm_h, xy=[self.body.xy[0]+arm_w/1.5, self.body.xy[1]+body_h/3], name='self.r_arm')
+
+        self.l_forearm = BodyPart(width=fore_arm_w, height=fore_arm_h, xy=[self.l_arm.xy[0]-0.8*fore_arm_w , self.l_arm.xy[1]], name='self.l_arm')
+        self.r_forearm = BodyPart(width=fore_arm_w, height=fore_arm_h, xy=[self.r_arm.xy[0]+0.8*fore_arm_w, self.r_arm.xy[1]], name='self.r_arm')
+
+
+    def plot(self, ax):
+        ax.add_patch(self.head.ellipse())
+        ax.add_patch(self.l_eye.ellipse())
+        ax.add_patch(self.r_eye.ellipse())
+        ax.add_patch(self.l_ear.ellipse())
+        ax.add_patch(self.r_ear.ellipse())
+        ax.add_patch(self.nose.ellipse())
+        ax.add_patch(self.mouth.ellipse())
+        ax.add_patch(self.body.ellipse())
+        ax.add_patch(self.l_thigh.ellipse())
+        ax.add_patch(self.r_thigh.ellipse())
+        ax.add_patch(self.l_leg.ellipse())
+        ax.add_patch(self.r_leg.ellipse())
+        ax.add_patch(self.l_arm.ellipse())
+        ax.add_patch(self.r_arm.ellipse())
+        ax.add_patch(self.l_forearm.ellipse())
+        ax.add_patch(self.r_forearm.ellipse())
+
+
+# plt.figure(figsize=(640,480))
+fig, ax = plt.subplots()
+# plt.show()
 
 height=0.8
-loc_x = 0.5
-head_width=height/7 # 80/640
-head_height=height/7 # 60/640
-head_x=loc_x
-head_y=height
-body_h=3*head_height
-body_w=1.2*head_width
-thigh_w=0.5*head_width
-thigh_h=2*head_height
-leg_w=0.5*head_width
-leg_h=2*head_height
-arm_h=0.5*head_width
-arm_w=1.2*head_width
-fore_arm_w=1.2*head_width
-fore_arm_h=0.4*head_width
-
-
-
-head = BodyPart(width=head_width, height=head_height, xy=[head_x, head_y], name='head')
-l_eye = BodyPart(width=head.w/4, height=head.h/7, xy=[head.xy[0] - head.w/6, head.xy[1] + head.h/6], color='black', name='l_eye')
-r_eye = BodyPart(width=head.w/4, height=head.h/8, xy=[head.xy[0] + head.w/6, head.xy[1] + head.h/6], color='black', name='r_eye')
-l_ear = BodyPart(width=head.w/8, height=head.h/4, xy=[head.xy[0] - head.w/2, head.xy[1]], color='black', name='r_eye')
-r_ear = BodyPart(width=head.w/8, height=head.h/4, xy=[head.xy[0] + head.w/2, head.xy[1]], color='black', name='r_eye')
-nose = BodyPart(width=l_eye.w/2, height=l_eye.h, xy=[head.xy[0], head.xy[1]], color='black', name='mouth')
-mouth = BodyPart(width=l_eye.w, height=l_eye.h, xy=[head.xy[0], head.xy[1]-head.h/4], color='black', name='mouth')
-
-body = BodyPart(width=body_w, height=body_h, xy=[head.xy[0], head.xy[1]-head.h/2-body_h/2], name='body')
-
-l_thigh = BodyPart(width=thigh_w, height=thigh_h, xy=[body.xy[0]-body.w/3, body.xy[1]-body.h/4-thigh_h/2], name='l_thigh')
-r_thigh = BodyPart(width=thigh_w, height=thigh_h, xy=[body.xy[0]+body.w/3, body.xy[1]-body.h/4-thigh_h/2], name='r_thigh')
-
-
-l_leg = BodyPart(width=leg_w, height=leg_h, xy=[l_thigh.xy[0], l_thigh.xy[1]-l_thigh.h/4-leg_h/2], name='l_leg')
-r_leg = BodyPart(width=leg_w, height=leg_h, xy=[r_thigh.xy[0], r_thigh.xy[1]-r_thigh.h/4-leg_h/2], name='r_leg')
-
-
-
-l_arm = BodyPart(width=arm_w, height=arm_h, xy=[body.xy[0]-arm_w/1.5, body.xy[1]+body_h/3], name='l_arm')
-r_arm = BodyPart(width=arm_w, height=arm_h, xy=[body.xy[0]+arm_w/1.5, body.xy[1]+body_h/3], name='r_arm')
-
-
-l_forearm = BodyPart(width=fore_arm_w, height=fore_arm_h, xy=[l_arm.xy[0]-0.8*fore_arm_w , l_arm.xy[1]], name='l_arm')
-r_forearm = BodyPart(width=fore_arm_w, height=fore_arm_h, xy=[r_arm.xy[0]+0.8*fore_arm_w, r_arm.xy[1]], name='r_arm')
-
-
-
-im_w = 640
-im_h = 640
-
-fig, ax = plt.subplots()
-# ax.set(xlim=(0,im_w), ylim=(0, im_h), aspect="equal")
-yy=head.ellipse()
-yy.angle=90
-ax.add_patch(yy)
-ax.add_patch(l_eye.ellipse())
-ax.add_patch(r_eye.ellipse())
-
-ax.add_patch(l_ear.ellipse())
-ax.add_patch(r_ear.ellipse())
-
-ax.add_patch(nose.ellipse())
-
-ax.add_patch(mouth.ellipse())
-ax.add_patch(body.ellipse())
-ax.add_patch(l_thigh.ellipse())
-ax.add_patch(r_thigh.ellipse())
-ax.add_patch(l_leg.ellipse())
-ax.add_patch(r_leg.ellipse())
-
-ax.add_patch(l_arm.ellipse())
-ax.add_patch(r_arm.ellipse())
-# ax.add_patch(l_forearm.rect(90))
-# ax.add_patch(r_forearm.rect(-90)) # -130:
-ax.add_patch(l_forearm.ellipse())
-ax.add_patch(r_forearm.ellipse())
-
-
+xloc = 0.5
+person = Person(height, xloc)
+person.plot(ax)
 plt.axis('off')
-# plt.figure(figsize=(640,480))
+# im_w = 640
+# im_h = 640
 
-# plt.show()
-plt.savefig('foo.jpeg')
+plt.savefig('foo1.jpeg')
